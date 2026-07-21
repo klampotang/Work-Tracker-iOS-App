@@ -12,6 +12,22 @@ struct Header: View {
     var body: some View {
         VStack {
             HStack {
+                Text("Job:")
+                    .foregroundColor(.primary)
+                if (viewModel.jobs.isEmpty) {
+                    Text("No jobs created")
+                        .foregroundColor(.secondary)
+                } else {
+                    Picker("Job", selection: $viewModel.selectedJobId) {
+                        ForEach(viewModel.jobs) { job in
+                            Text("\(job.name)").tag(job.id as UUID?)
+                        }
+                    }
+                }
+            }
+            .padding()
+
+            HStack {
                 Button("Start log") {
                     // TODO
                 }
@@ -31,33 +47,18 @@ struct Header: View {
                 .background(.red)
                 .cornerRadius(4)
             }
-            .padding()
-            
-            HStack {
-                Text("Job:")
-                    .foregroundColor(.primary)
-                if (viewModel.jobs.isEmpty) {
-                    Text("No jobs created")
-                        .foregroundColor(.secondary)
-                } else {
-                    Picker("Job", selection: $viewModel.selectedJobId) {
-                        ForEach(viewModel.jobs) { job in
-                            Text("\(job.name)").tag(job.id as UUID?)
-                        }
-                    }
-                }
-            }
+            .padding(.horizontal, 4)
             
             Button("Add manual entry") {
                 // TODO
             }
-            .font(.title2)
+            .font(.title3)
             .foregroundColor(.white)
-            .padding(10)
+            .padding(5)
             .background(.yellow)
             .cornerRadius(4)
         }
-        .padding()
+        .padding(.bottom, 10)
         .background(.thinMaterial)
     }
 }
