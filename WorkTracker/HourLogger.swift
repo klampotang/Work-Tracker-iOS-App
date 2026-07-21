@@ -16,13 +16,18 @@ struct HourLogger: View {
         NavigationStack {
             VStack {
                 Header(viewModel: viewModel)
+                Divider()
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 10)
                 List {
                     ForEach(viewModel.entries) { entry in
                         Text("Entry!")
                     }
                     .onDelete(perform: deleteEntries)
                 }
+                .scrollContentBackground(.hidden)
             }
+            .background(Color(uiColor: .systemGroupedBackground))
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
                     Button(action: {

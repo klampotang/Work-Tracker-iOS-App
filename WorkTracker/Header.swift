@@ -48,7 +48,7 @@ struct Header: View {
                 .background(.red)
                 .cornerRadius(4)
             }
-            .padding(.horizontal, 4)
+            .padding(.horizontal, 10)
             
             Button("Add manual entry") {
                 // TODO
@@ -60,7 +60,6 @@ struct Header: View {
             .cornerRadius(4)
         }
         .padding(.bottom, 10)
-        .background(.thinMaterial)
     }
 }
 
