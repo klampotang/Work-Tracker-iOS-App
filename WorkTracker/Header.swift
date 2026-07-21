@@ -29,7 +29,7 @@ struct Header: View {
 
             HStack {
                 Button("Start log") {
-                    // TODO
+                    viewModel.startTrackingJob()
                 }
                 .font(.title2)
                 .foregroundColor(.white)
@@ -39,8 +39,9 @@ struct Header: View {
                 
                 Spacer()
                 Button("Stop log") {
-                    // TODO
+                    viewModel.stopTrackingJob()
                 }
+                .disabled(viewModel.startTime == nil)
                 .font(.title2)
                 .foregroundColor(.white)
                 .padding(10)

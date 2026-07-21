@@ -16,7 +16,12 @@ struct HourLogger: View {
         NavigationStack {
             VStack {
                 Header(viewModel: viewModel)
-                Spacer()
+                List {
+                    ForEach(viewModel.entries) { entry in
+                        Text("Entry!")
+                    }
+                    .onDelete(perform: deleteEntries)
+                }
             }
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
@@ -38,7 +43,12 @@ struct HourLogger: View {
                 }
                 .disabled(newJobName.isEmpty)
             }
+            .navigationTitle("Work Tracker")
         }
+    }
+    
+    private func deleteEntries(at offsets: IndexSet) {
+        viewModel.entries.remove(atOffsets: offsets)
     }
 }
 

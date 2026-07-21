@@ -7,10 +7,18 @@
 
 import Foundation
 
-struct WorkEntry {
+struct WorkEntry: Identifiable {
+    let id: UUID
     var job: Job
     var startTime: Date
     var endTime: Date
+    
+    init(id: UUID = UUID(), job: Job, startTime: Date, endTime: Date) {
+        self.id = id
+        self.job = job
+        self.startTime = startTime
+        self.endTime = endTime
+    }
     
     static func mockEntries() -> [WorkEntry] {
         let startTime1 = Calendar.current.date(
