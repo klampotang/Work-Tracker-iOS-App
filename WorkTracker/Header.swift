@@ -31,22 +31,27 @@ struct Header: View {
                 Button("Start log") {
                     viewModel.startTrackingJob()
                 }
+                .buttonStyle(.borderedProminent)
+                .tint(.green)
+                .disabled(viewModel.selectedJobId == nil)
                 .font(.title2)
                 .foregroundColor(.white)
-                .padding(10)
-                .background(.green)
-                .cornerRadius(4)
-                
-                Spacer()
+            
+                if let startTime = viewModel.startTime {
+                    Text(startTime, style: .timer)
+                        .font(.system(.title, design: .rounded))
+                        .monospacedDigit()
+                        .foregroundStyle(.blue)
+                }
+            
                 Button("Stop log") {
                     viewModel.stopTrackingJob()
                 }
+                .buttonStyle(.borderedProminent)
+                .tint(.red)
                 .disabled(viewModel.startTime == nil)
                 .font(.title2)
                 .foregroundColor(.white)
-                .padding(10)
-                .background(.red)
-                .cornerRadius(4)
             }
             .padding(.horizontal, 10)
             

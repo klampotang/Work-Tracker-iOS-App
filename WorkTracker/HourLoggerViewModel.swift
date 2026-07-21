@@ -38,7 +38,12 @@ class HourLoggerViewModel {
         }) {
             let workEntry = WorkEntry(job: jobs[jobIndex], startTime: startTime, endTime: endTime)
             entries.append(workEntry)
+            reset()
         }
+    }
+    
+    func reset() {
+        startTime = nil
     }
     
     init() {
