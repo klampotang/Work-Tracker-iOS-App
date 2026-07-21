@@ -9,11 +9,36 @@ import SwiftUI
 
 struct HourLogger: View {
     @Bindable var viewModel: HourLoggerViewModel
+    @State private var isShowingAddJobAlert: Bool = false
+    @State private var newJobName: String = ""
+
     var body: some View {
-        VStack {
-            Header(viewModel: viewModel)
+        NavigationStack {
+            VStack {
+                Header(viewModel: viewModel)
+                Spacer()
+            }
+            .toolbar {
+                ToolbarItem(placement: .primaryAction) {
+                    Button(action: {
+                        isShowingAddJobAlert = true
+                    }) {
+                        Label("New job", systemImage: "plus")
+                    }
+                }
+            }
+            .alert("Add job", isPresented: $isShowingAddJobAlert) {
+                TextField("Add job", text: $newJobName)
+                Button("Cancel", role: .cancel) {
+                    newJobName = ""
+                }
+                Button("Okay") {
+                    viewModel.addJob(newJobName)
+                    newJobName = ""
+                }
+                .disabled(newJobName.isEmpty)
+            }
         }
-        
     }
 }
 

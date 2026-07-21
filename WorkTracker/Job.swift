@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Job {
+struct Job: Identifiable {
     let id: UUID
     let name: String
     
