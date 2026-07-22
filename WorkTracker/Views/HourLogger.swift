@@ -93,7 +93,7 @@ struct HourLogger: View {
                         try await DotLottieFile.loadedFrom(url: animationURL)
                     }
                     .playing(loopMode: .playOnce)
-                    .animationSpeed(2.0)
+                    .animationSpeed(3.0)
                     .animationDidFinish { _ in
                         // Triggered automatically when the single loop completes
                         withAnimation(.easeOut(duration: 0.3)) {

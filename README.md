@@ -9,6 +9,7 @@ A native iOS app for tracking hours worked across multiple jobs. Built with Swif
 - **Multiple Jobs** — create and manage as many jobs as you need; switch the active job from the header picker.
 - **Entry List** — browse all logged sessions grouped by date. Swipe to delete individual entries. Filter the list by job using the toolbar menu.
 - **History Chart** — visualise total hours worked over the last week, 3 months, or year using a native SwiftUI bar chart. Filter by job using the segmented picker.
+- **Stop Animation** — a Lottie animation plays as a celebratory overlay when you stop the timer, then automatically dismisses itself.
 
 ## Project Structure
 
@@ -50,10 +51,15 @@ Jobs and work entries are persisted across app launches using **SwiftData** (iOS
 - Xcode 16+
 - iOS 18+
 
+## Dependencies
+
+| Package | Purpose |
+|---------|---------|
+| [Lottie for iOS](https://github.com/airbnb/lottie-ios) | Plays the `.lottie` animation overlay when the timer is stopped |
+
 ## Getting Started
 
 1. Clone the repository.
 2. Open `WorkTracker.xcodeproj` in Xcode.
-3. Select a simulator or connected device and press **Run** (⌘R).
-
-No external dependencies or package manager setup required — the project uses only Apple frameworks (SwiftUI, SwiftData, Charts, Foundation).
+3. Xcode will automatically resolve the **Lottie** Swift package dependency on first open (requires an internet connection).
+4. Select a simulator or connected device and press **Run** (⌘R).
