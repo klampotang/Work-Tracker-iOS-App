@@ -18,9 +18,9 @@ WorkTracker/
 ├── Constants.swift               # Tab identifiers
 ├── Helpers.swift                 # Formatting & grouping utilities
 ├── Models/
-│   ├── Job.swift                 # Job model
-│   ├── WorkEntry.swift           # Work session model
-│   └── HourLoggerViewModel.swift # Observable view model (shared state)
+│   ├── Job.swift                 # Job model (@Model — persisted via SwiftData)
+│   ├── WorkEntry.swift           # Work session model (@Model — persisted via SwiftData)
+│   └── HourLoggerViewModel.swift # Observable view model (transient UI state)
 └── Views/
     ├── MainTabView.swift         # Root tab container
     ├── Header.swift              # Start/stop controls & job picker
@@ -37,6 +37,14 @@ WorkTracker/
 <img width="300" alt="Simulator Screenshot - iPhone 17 Pro - 2026-07-21 at 19 58 17" src="https://github.com/user-attachments/assets/d7df41d6-cc3b-4d7c-8883-271a79ca4583" />
 
 
+## Persistence
+
+Jobs and work entries are persisted across app launches using **SwiftData** (iOS 17+). The store is set up automatically — no configuration required.
+
+- `Job` and `WorkEntry` are `@Model` classes managed by SwiftData.
+- Each view fetches live data via `@Query`, so the UI updates automatically whenever the store changes.
+- Writes (adding jobs, logging hours, manual entries, deletions) go through `ModelContext`, which is injected via the SwiftUI environment from the root `ModelContainer`.
+
 ## Requirements
 
 - Xcode 16+
@@ -48,4 +56,4 @@ WorkTracker/
 2. Open `WorkTracker.xcodeproj` in Xcode.
 3. Select a simulator or connected device and press **Run** (⌘R).
 
-No external dependencies or package manager setup required — the project uses only Apple frameworks (SwiftUI, Charts, Foundation).
+No external dependencies or package manager setup required — the project uses only Apple frameworks (SwiftUI, SwiftData, Charts, Foundation).
