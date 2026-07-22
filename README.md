@@ -31,10 +31,10 @@ WorkTracker/
     └── EntriesView.swift         # Individual entry row
 ```
 ## Screenshots
+<img width="300" alt="Simulator Screenshot - iPhone 17 Pro - 2026-07-21 at 19 58 03" src="https://github.com/user-attachments/assets/dd847fcc-615c-4d80-ae5e-a2652149b63b" />
 <img width="300" alt="Simulator Screenshot - iPhone 17 Pro - 2026-07-21 at 19 58 29" src="https://github.com/user-attachments/assets/e3a8a412-4851-4ad7-8a32-9ee610abe7d4" />
 <img width="300" alt="Simulator Screenshot - iPhone 17 Pro - 2026-07-21 at 19 58 23" src="https://github.com/user-attachments/assets/40d39105-0d5a-4a66-85a1-ffc1df530ff0" />
 <img width="300" alt="Simulator Screenshot - iPhone 17 Pro - 2026-07-21 at 19 58 17" src="https://github.com/user-attachments/assets/d7df41d6-cc3b-4d7c-8883-271a79ca4583" />
-<img width="300" alt="Simulator Screenshot - iPhone 17 Pro - 2026-07-21 at 19 58 03" src="https://github.com/user-attachments/assets/dd847fcc-615c-4d80-ae5e-a2652149b63b" />
 
 
 ## Requirements
