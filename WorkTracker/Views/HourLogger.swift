@@ -11,19 +11,10 @@ struct HourLogger: View {
     @Bindable var viewModel: HourLoggerViewModel
     @State private var isShowingAddJobAlert: Bool = false
     @State private var newJobName: String = ""
-    @State private var jobFilterId: UUID? = nil
-    
-    private var filteredEntries: [WorkEntry] {
-        guard let jobFilterId = jobFilterId else {
-            return viewModel.entries
-        }
-        return viewModel.entries.filter {
-            $0.job.id == jobFilterId
-        }
-    }
     private var groupedEntries: [(date: Date, entries: [WorkEntry])] {
-        return Helpers.groupedEntries(filteredEntries)
+        return Helpers.groupedEntries(viewModel.filteredEntries)
     }
+
     var body: some View {
         NavigationStack {
             VStack {
@@ -57,7 +48,7 @@ struct HourLogger: View {
                         Menu {
                             ForEach(viewModel.jobs) { job in
                                 Button(job.name, action: {
-                                    jobFilterId = job.id
+                                    viewModel.jobFilterId = job.id
                                 })
                             }
                         } label: {

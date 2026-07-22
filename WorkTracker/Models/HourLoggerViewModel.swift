@@ -16,7 +16,16 @@ class HourLoggerViewModel {
     var selectedJobId: UUID? = nil
     var startTime: Date? = nil
     var isShowingManualEntryView: Bool = false
+    var jobFilterId: UUID? = nil
     
+    var filteredEntries: [WorkEntry] {
+        guard let jobFilterId = jobFilterId else {
+            return entries
+        }
+        return entries.filter {
+            $0.job.id == jobFilterId
+        }
+    }
     func addJob(_ name: String) {
         let newJob = Job(name: name)
         jobs.append(newJob)

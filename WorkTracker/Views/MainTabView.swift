@@ -16,7 +16,7 @@ struct MainTabView: View {
                     Label("Log Hours", systemImage: "timer")
                 }
                 .tag(TabIdentifier.timer)
-            History()
+            History(viewModel: viewModel)
                 .tabItem {
                     Label("History", systemImage: "chart.line.text.clipboard.fill")
                 }

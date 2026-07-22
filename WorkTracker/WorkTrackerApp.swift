@@ -12,7 +12,7 @@ struct WorkTrackerApp: App {
     @State var viewModel = HourLoggerViewModel()
     var body: some Scene {
         WindowGroup {
-            HourLogger(viewModel: viewModel)
+            MainTabView(viewModel: viewModel)
         }
     }
 }
