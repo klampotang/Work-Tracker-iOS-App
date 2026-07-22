@@ -11,7 +11,16 @@ struct HourLogger: View {
     @Bindable var viewModel: HourLoggerViewModel
     @State private var isShowingAddJobAlert: Bool = false
     @State private var newJobName: String = ""
-
+    @State private var jobFilterId: UUID? = nil
+    
+    private var filteredEntries: [WorkEntry] {
+        guard let jobFilterId = jobFilterId else {
+            return viewModel.entries
+        }
+        return viewModel.entries.filter {
+            $0.job.id == jobFilterId
+        }
+    }
     var body: some View {
         NavigationStack {
             VStack {
@@ -20,8 +29,13 @@ struct HourLogger: View {
                     .padding(.horizontal, 20)
                     .padding(.bottom, 10)
                 List {
-                    ForEach(viewModel.entries) { entry in
-                        Text("Entry!")
+                    ForEach(filteredEntries) { entry in
+                        VStack(alignment: .leading) {
+                            Text(entry.job.name)
+                            Text(Helpers.formattedRunningTime(from: entry.startTime, entry.endTime))
+                                .multilineTextAlignment(.leading)
+                                .font(.caption)
+                        }
                     }
                     .onDelete(perform: deleteEntries)
                 }
@@ -29,11 +43,24 @@ struct HourLogger: View {
             }
             .background(Color(uiColor: .systemGroupedBackground))
             .toolbar {
-                ToolbarItem(placement: .primaryAction) {
+                ToolbarItem(placement: .topBarTrailing) {
                     Button(action: {
                         isShowingAddJobAlert = true
                     }) {
                         Label("New job", systemImage: "plus")
+                    }
+                }
+                if !viewModel.jobs.isEmpty {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Menu {
+                            ForEach(viewModel.jobs) { job in
+                                Button(job.name, action: {
+                                    jobFilterId = job.id
+                                })
+                            }
+                        } label: {
+                            Image(systemName: "line.3.horizontal.decrease")
+                        }
                     }
                 }
             }
