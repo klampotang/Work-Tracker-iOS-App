@@ -8,7 +8,13 @@
 import SwiftUI
 
 struct EntriesView: View {
+    var entry: WorkEntry
     var body: some View {
-        
+        VStack(alignment: .leading) {
+            Text(entry.job.name)
+            Text(Helpers.formattedRunningTime(from: entry.startTime, entry.endTime))
+                .multilineTextAlignment(.leading)
+                .font(.caption)
+        }
     }
 }

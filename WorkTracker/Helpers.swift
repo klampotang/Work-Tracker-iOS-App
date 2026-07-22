@@ -15,4 +15,13 @@ struct Helpers {
         formatter.unitsStyle = .abbreviated
         return formatter.string(from: elapsedTime) ?? "0s"
     }
+    
+    static func groupedEntries(_ entries: [WorkEntry]) -> [(date: Date, entries: [WorkEntry])] {
+        let dictionary = Dictionary(grouping: entries) { entry in
+            Calendar.current.startOfDay(for: entry.startTime)
+        }
+        return dictionary
+            .map { (date: $0.key, entries: $0.value) }
+            .sorted { $0.date > $1.date }
+    }
 }

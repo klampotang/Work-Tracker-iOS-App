@@ -21,6 +21,9 @@ struct HourLogger: View {
             $0.job.id == jobFilterId
         }
     }
+    private var groupedEntries: [(date: Date, entries: [WorkEntry])] {
+        return Helpers.groupedEntries(filteredEntries)
+    }
     var body: some View {
         NavigationStack {
             VStack {
@@ -29,12 +32,11 @@ struct HourLogger: View {
                     .padding(.horizontal, 20)
                     .padding(.bottom, 10)
                 List {
-                    ForEach(filteredEntries) { entry in
-                        VStack(alignment: .leading) {
-                            Text(entry.job.name)
-                            Text(Helpers.formattedRunningTime(from: entry.startTime, entry.endTime))
-                                .multilineTextAlignment(.leading)
-                                .font(.caption)
+                    ForEach(groupedEntries, id: \.date) { group in
+                        Section(header: Text(group.date, style: .date)) {
+                            ForEach(group.entries) { entry in
+                                EntriesView(entry: entry)
+                            }
                         }
                     }
                     .onDelete(perform: deleteEntries)
