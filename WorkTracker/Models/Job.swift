@@ -15,4 +15,11 @@ struct Job: Identifiable {
         self.id = id
         self.name = name
     }
+    
+    static func mockJobs() -> [Job] {
+        return [
+            Job(name: "Meta"),
+            Job(name: "Interview prep")
+        ]
+    }
 }

@@ -18,11 +18,7 @@ struct Header: View {
                     Text("No jobs created")
                         .foregroundColor(.secondary)
                 } else {
-                    Picker("Job", selection: $viewModel.selectedJobId) {
-                        ForEach(viewModel.jobs) { job in
-                            Text("\(job.name)").tag(job.id as UUID?)
-                        }
-                    }
+                    JobPicker(viewModel: viewModel)
                 }
             }
             .padding()
@@ -56,7 +52,7 @@ struct Header: View {
             .padding(.horizontal, 10)
             
             Button("Add manual entry") {
-                // TODO
+                viewModel.isShowingManualEntryView = true
             }
             .font(.title3)
             .foregroundColor(.white)

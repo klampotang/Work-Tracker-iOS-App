@@ -20,7 +20,7 @@ struct WorkEntry: Identifiable {
         self.endTime = endTime
     }
     
-    static func mockEntries() -> [WorkEntry] {
+    static func mockEntries(jobs: [Job]) -> [WorkEntry] {
         let startTime1 = Calendar.current.date(
                         bySettingHour: 9,
                         minute: 0,
@@ -46,8 +46,8 @@ struct WorkEntry: Identifiable {
                                                second: 0,
                                                of: Date())!
         return [
-            WorkEntry(job: Job(name: "Meta"), startTime: startTime1, endTime: endTime1),
-            WorkEntry(job: Job(name: "Interview"), startTime: startTime2, endTime: endTime2)
+            WorkEntry(job: jobs[0], startTime: startTime1, endTime: endTime1),
+            WorkEntry(job: jobs[1], startTime: startTime2, endTime: endTime2)
         ]
     }
 }

@@ -79,6 +79,11 @@ struct HourLogger: View {
             }
             .navigationTitle("Work Tracker")
         }
+        .sheet(isPresented: $viewModel.isShowingManualEntryView) {
+            ManualEntryView(viewModel: viewModel)
+            .presentationDetents([.height(280)])
+            .presentationDragIndicator(.visible)
+        }
     }
     
     private func deleteEntries(at offsets: IndexSet) {

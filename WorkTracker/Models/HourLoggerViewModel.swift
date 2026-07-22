@@ -11,10 +11,11 @@ import Foundation
 @Observable
 class HourLoggerViewModel {
     // State for work logger
-    var entries: [WorkEntry] = WorkEntry.mockEntries()
     var jobs: [Job] = []
+    var entries: [WorkEntry] = []
     var selectedJobId: UUID? = nil
     var startTime: Date? = nil
+    var isShowingManualEntryView: Bool = false
     
     func addJob(_ name: String) {
         let newJob = Job(name: name)
@@ -28,6 +29,15 @@ class HourLoggerViewModel {
     
     func startTrackingJob() {
         startTime = Date()
+    }
+    
+    func startTrackingJob(with startTime: Date) {
+        self.startTime = startTime
+    }
+    
+    func addManualEntry(with startTime: Date, endTime: Date, job: Job) {
+        let workEntry = WorkEntry(job: job, startTime: startTime, endTime: endTime)
+        entries.append(workEntry)
     }
     
     func stopTrackingJob() {
@@ -48,6 +58,8 @@ class HourLoggerViewModel {
     
     init() {
         // Automatically select the first job on launch
+        self.jobs = Job.mockJobs()
+        self.entries = WorkEntry.mockEntries(jobs: jobs)
         self.selectedJobId = jobs.first?.id
     }
 }
