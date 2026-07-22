@@ -52,6 +52,7 @@ struct Header: View {
 
                 Button("Stop log") {
                     viewModel.stopTrackingJob(jobs: jobs, context: modelContext)
+                    viewModel.showAnimationOverlay = true
                 }
                 .buttonStyle(.borderedProminent)
                 .tint(.red)

@@ -15,6 +15,7 @@ class HourLoggerViewModel {
     var startTime: Date? = nil
     var isShowingManualEntryView: Bool = false
     var jobFilterId: UUID? = nil
+    var showAnimationOverlay = false
 
     func filteredEntries(_ entries: [WorkEntry]) -> [WorkEntry] {
         guard let jobFilterId else { return entries }
