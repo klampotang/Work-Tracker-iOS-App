@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct WorkTrackerApp: App {
@@ -14,5 +15,6 @@ struct WorkTrackerApp: App {
         WindowGroup {
             MainTabView(viewModel: viewModel)
         }
+        .modelContainer(for: [Job.self, WorkEntry.self])
     }
 }

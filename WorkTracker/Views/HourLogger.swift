@@ -6,13 +6,22 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct HourLogger: View {
     @Bindable var viewModel: HourLoggerViewModel
+    @Query(sort: \WorkEntry.startTime, order: .reverse) var entries: [WorkEntry]
+    @Query var jobs: [Job]
+    @Environment(\.modelContext) private var modelContext
     @State private var isShowingAddJobAlert: Bool = false
     @State private var newJobName: String = ""
+
+    private var filteredEntries: [WorkEntry] {
+        viewModel.filteredEntries(entries)
+    }
+
     private var groupedEntries: [(date: Date, entries: [WorkEntry])] {
-        return Helpers.groupedEntries(viewModel.filteredEntries)
+        return Helpers.groupedEntries(filteredEntries)
     }
 
     var body: some View {
@@ -28,9 +37,13 @@ struct HourLogger: View {
                             ForEach(group.entries) { entry in
                                 EntriesView(entry: entry)
                             }
+                            .onDelete { offsets in
+                                for offset in offsets {
+                                    modelContext.delete(group.entries[offset])
+                                }
+                            }
                         }
                     }
-                    .onDelete(perform: deleteEntries)
                 }
                 .scrollContentBackground(.hidden)
             }
@@ -43,13 +56,16 @@ struct HourLogger: View {
                         Label("New job", systemImage: "plus")
                     }
                 }
-                if !viewModel.jobs.isEmpty {
+                if !jobs.isEmpty {
                     ToolbarItem(placement: .topBarTrailing) {
                         Menu {
-                            ForEach(viewModel.jobs) { job in
-                                Button(job.name, action: {
+                            Button("All") {
+                                viewModel.jobFilterId = nil
+                            }
+                            ForEach(jobs) { job in
+                                Button(job.name) {
                                     viewModel.jobFilterId = job.id
-                                })
+                                }
                             }
                         } label: {
                             Image(systemName: "line.3.horizontal.decrease")
@@ -63,7 +79,7 @@ struct HourLogger: View {
                     newJobName = ""
                 }
                 Button("Okay") {
-                    viewModel.addJob(newJobName)
+                    viewModel.addJob(newJobName, context: modelContext)
                     newJobName = ""
                 }
                 .disabled(newJobName.isEmpty)
@@ -72,17 +88,17 @@ struct HourLogger: View {
         }
         .sheet(isPresented: $viewModel.isShowingManualEntryView) {
             ManualEntryView(viewModel: viewModel)
-            .presentationDetents([.height(280)])
-            .presentationDragIndicator(.visible)
+                .presentationDetents([.height(280)])
+                .presentationDragIndicator(.visible)
         }
-    }
-    
-    private func deleteEntries(at offsets: IndexSet) {
-        viewModel.entries.remove(atOffsets: offsets)
     }
 }
 
 #Preview {
-    @Previewable var viewModel = HourLoggerViewModel()
-    HourLogger(viewModel: viewModel)
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: Job.self, WorkEntry.self, configurations: config)
+    let job = Job(name: "Meta")
+    container.mainContext.insert(job)
+    return HourLogger(viewModel: HourLoggerViewModel())
+        .modelContainer(container)
 }

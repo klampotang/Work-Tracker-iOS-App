@@ -6,20 +6,24 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ManualEntryView: View {
     @Bindable var viewModel: HourLoggerViewModel
+    @Query var jobs: [Job]
+    @Environment(\.modelContext) private var modelContext
     @State var startTime: Date = Date()
     @State var endTime: Date = Date()
+
     var body: some View {
         let startDateRange: ClosedRange<Date> = {
             let calendar = Calendar.current
             let startComponents = DateComponents(year: 2026, month: 1, day: 1)
-            return calendar.date(from:startComponents)!
+            return calendar.date(from: startComponents)!
                 ...
                 Date()
         }()
-        
+
         let endDateRange: ClosedRange<Date> = {
             return startTime
                 ...
@@ -45,11 +49,8 @@ struct ManualEntryView: View {
                 displayedComponents: [.date, .hourAndMinute]
             )
             Button("Add manual entry") {
-                if let jobIndex = viewModel.jobs.firstIndex(where: {
-                    $0.id == viewModel.selectedJobId
-                }) {
-                    let job = viewModel.jobs[jobIndex]
-                    viewModel.addManualEntry(with: startTime, endTime: endTime, job: job)
+                if let job = jobs.first(where: { $0.id == viewModel.selectedJobId }) {
+                    viewModel.addManualEntry(with: startTime, endTime: endTime, job: job, context: modelContext)
                 }
                 viewModel.isShowingManualEntryView = false
             }
@@ -59,6 +60,10 @@ struct ManualEntryView: View {
 }
 
 #Preview {
-    @Previewable var viewModel = HourLoggerViewModel()
-    ManualEntryView(viewModel: viewModel)
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: Job.self, WorkEntry.self, configurations: config)
+    let job = Job(name: "Meta")
+    container.mainContext.insert(job)
+    return ManualEntryView(viewModel: HourLoggerViewModel())
+        .modelContainer(container)
 }

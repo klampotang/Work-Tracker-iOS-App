@@ -7,68 +7,51 @@
 
 import SwiftUI
 import Foundation
+import SwiftData
 
 @Observable
 class HourLoggerViewModel {
-    // State for work logger
-    var jobs: [Job] = []
-    var entries: [WorkEntry] = []
     var selectedJobId: UUID? = nil
     var startTime: Date? = nil
     var isShowingManualEntryView: Bool = false
     var jobFilterId: UUID? = nil
-    
-    var filteredEntries: [WorkEntry] {
-        guard let jobFilterId = jobFilterId else {
-            return entries
-        }
-        return entries.filter {
-            $0.job.id == jobFilterId
-        }
+
+    func filteredEntries(_ entries: [WorkEntry]) -> [WorkEntry] {
+        guard let jobFilterId else { return entries }
+        return entries.filter { $0.job.id == jobFilterId }
     }
-    func addJob(_ name: String) {
+
+    func addJob(_ name: String, context: ModelContext) {
         let newJob = Job(name: name)
-        jobs.append(newJob)
-        
-        // Optional: Auto-select if nothing is currently selected
+        context.insert(newJob)
         if selectedJobId == nil {
             selectedJobId = newJob.id
         }
     }
-    
+
     func startTrackingJob() {
         startTime = Date()
     }
-    
+
     func startTrackingJob(with startTime: Date) {
         self.startTime = startTime
     }
-    
-    func addManualEntry(with startTime: Date, endTime: Date, job: Job) {
-        let workEntry = WorkEntry(job: job, startTime: startTime, endTime: endTime)
-        entries.append(workEntry)
-    }
-    
-    func stopTrackingJob() {
-        guard let startTime = startTime else {return}
-        let endTime = Date()
-        if let jobIndex = jobs.firstIndex(where: {
-            $0.id == selectedJobId
-        }) {
-            let workEntry = WorkEntry(job: jobs[jobIndex], startTime: startTime, endTime: endTime)
-            entries.append(workEntry)
+
+    func stopTrackingJob(jobs: [Job], context: ModelContext) {
+        guard let startTime else { return }
+        if let job = jobs.first(where: { $0.id == selectedJobId }) {
+            let workEntry = WorkEntry(job: job, startTime: startTime, endTime: Date())
+            context.insert(workEntry)
             reset()
         }
     }
-    
+
+    func addManualEntry(with startTime: Date, endTime: Date, job: Job, context: ModelContext) {
+        let workEntry = WorkEntry(job: job, startTime: startTime, endTime: endTime)
+        context.insert(workEntry)
+    }
+
     func reset() {
         startTime = nil
-    }
-    
-    init() {
-        // Automatically select the first job on launch
-        self.jobs = Job.mockJobs()
-        self.entries = WorkEntry.mockEntries(jobs: jobs)
-        self.selectedJobId = jobs.first?.id
     }
 }

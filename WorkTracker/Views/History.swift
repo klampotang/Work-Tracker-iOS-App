@@ -7,13 +7,14 @@
 
 import SwiftUI
 import Charts
+import SwiftData
 
 // 1. Time Range Options
 enum TimeRange: String, CaseIterable, Identifiable {
     case week = "Last Week"
     case month3 = "3 Months"
     case year = "Last Year"
-    
+
     var id: String { rawValue }
 }
 
@@ -26,7 +27,13 @@ struct ChartDataPoint: Identifiable {
 
 struct History: View {
     @Bindable var viewModel: HourLoggerViewModel
+    @Query var entries: [WorkEntry]
+    @Query var jobs: [Job]
     @State private var selectedRange: TimeRange = .week
+
+    private var filteredEntries: [WorkEntry] {
+        viewModel.filteredEntries(entries)
+    }
 
     var body: some View {
         NavigationStack {
@@ -38,18 +45,18 @@ struct History: View {
                     }
                 }
                 .pickerStyle(.segmented)
-                
+
                 // Header summary
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Total Hours")
                         .font(.caption)
                         .foregroundStyle(.secondary)
-                    
+
                     Text("\(totalHours, specifier: "%.1f") hrs")
                         .font(.title2)
                         .bold()
                 }
-                
+
                 // The Dynamic Bar Chart
                 Chart(chartData) { point in
                     BarMark(
@@ -72,13 +79,14 @@ struct History: View {
                     }
                 }
                 .frame(height: 220)
+
                 VStack {
                     Text("Filter by job:")
                         .bold()
                     Picker("Job", selection: $viewModel.jobFilterId) {
                         Text("All").tag(nil as UUID?)
                             .font(.caption)
-                        ForEach(viewModel.jobs) { job in
+                        ForEach(jobs) { job in
                             Text(job.name).tag(job.id as UUID?)
                         }
                         .font(.caption)
@@ -114,19 +122,19 @@ struct History: View {
     private var xAxisFormatStyle: Date.FormatStyle {
         switch selectedRange {
         case .week:
-            return .dateTime.weekday(.abbreviated) // e.g. "Mon", "Tue"
+            return .dateTime.weekday(.abbreviated)   // e.g. "Mon", "Tue"
         case .month3:
             return .dateTime.month(.abbreviated).day() // e.g. "Jul 12"
         case .year:
-            return .dateTime.month(.abbreviated) // e.g. "Jan", "Feb"
+            return .dateTime.month(.abbreviated)     // e.g. "Jan", "Feb"
         }
     }
 
-    /// Filters and groups `entries` by the selected date range
+    /// Filters and groups filtered entries by the selected date range
     private var chartData: [ChartDataPoint] {
         let calendar = Calendar.current
         let now = Date()
-        
+
         // 1. Determine start date limit
         let startDate: Date = {
             switch selectedRange {
@@ -138,12 +146,12 @@ struct History: View {
                 return calendar.date(byAdding: .year, value: -1, to: now) ?? now
             }
         }()
-        
+
         // 2. Filter entries within range
-        let filteredEntries = viewModel.filteredEntries.filter { $0.startTime >= startDate && $0.startTime <= now }
-        
+        let rangeFiltered = filteredEntries.filter { $0.startTime >= startDate && $0.startTime <= now }
+
         // 3. Group by Day, Week, or Month
-        let grouped = Dictionary(grouping: filteredEntries) { entry in
+        let grouped = Dictionary(grouping: rangeFiltered) { entry in
             switch selectedRange {
             case .week:
                 return calendar.startOfDay(for: entry.startTime)
@@ -155,7 +163,7 @@ struct History: View {
                 return calendar.date(from: components) ?? entry.startTime
             }
         }
-        
+
         // 4. Sum hours per group & sort chronologically
         return grouped.map { (date, groupEntries) in
             let totalSeconds = groupEntries.reduce(0) { $0 + $1.endTime.timeIntervalSince($1.startTime) }
@@ -165,6 +173,10 @@ struct History: View {
 }
 
 #Preview {
-    @Previewable var viewModel = HourLoggerViewModel()
-    History(viewModel: viewModel)
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: Job.self, WorkEntry.self, configurations: config)
+    let job = Job(name: "Meta")
+    container.mainContext.insert(job)
+    return History(viewModel: HourLoggerViewModel())
+        .modelContainer(container)
 }
