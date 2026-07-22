@@ -54,11 +54,10 @@ struct Header: View {
             Button("Add manual entry") {
                 viewModel.isShowingManualEntryView = true
             }
-            .font(.title3)
+            .disabled(viewModel.startTime != nil)
+            .buttonStyle(.borderedProminent)
+            .font(.caption)
             .foregroundColor(.white)
-            .padding(5)
-            .background(.yellow)
-            .cornerRadius(4)
         }
         .padding(.bottom, 10)
     }

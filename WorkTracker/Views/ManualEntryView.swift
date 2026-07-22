@@ -35,7 +35,8 @@ struct ManualEntryView: View {
                 displayedComponents: [.date, .hourAndMinute]
             )
             Button("Start from selected time") {
-                
+                viewModel.startTrackingJob(with: startTime)
+                viewModel.isShowingManualEntryView = false
             }
             DatePicker(
                 "End Date",
@@ -50,6 +51,7 @@ struct ManualEntryView: View {
                     let job = viewModel.jobs[jobIndex]
                     viewModel.addManualEntry(with: startTime, endTime: endTime, job: job)
                 }
+                viewModel.isShowingManualEntryView = false
             }
         }
         .padding()
