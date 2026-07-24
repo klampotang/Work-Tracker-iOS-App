@@ -7,6 +7,15 @@
 
 import Foundation
 
+struct LayedOutEntry: Identifiable {
+    var id: UUID {
+        return entry.id
+    }
+    let entry: WorkEntry
+    let columnIndex: Int
+    let totalColumns: Int
+}
+
 struct Helpers {
     static func formattedRunningTime(from startTime: Date, _ endTime: Date) -> String {
         let elapsedTime = endTime.timeIntervalSince(startTime)
@@ -40,5 +49,27 @@ struct Helpers {
         } else {
             return "\(index - 12) PM"
         }
+    }
+    
+    static func layOut(entries: [WorkEntry]) -> [LayedOutEntry] {
+        var result = [LayedOutEntry]()
+        for entry in entries {
+            // Find overlapping entries with this one
+            let overlappingEntries = entries.filter { otherEntry in
+                return entriesOverlap(entry1: otherEntry, entry2: entry)
+            }
+            // Find columnIndex
+            let columnIndex = overlappingEntries.firstIndex(where: {
+                $0.id == entry.id
+            }) ?? 0
+            // Find column count
+            let totalColumns = overlappingEntries.count
+            result.append(LayedOutEntry(entry: entry, columnIndex: columnIndex, totalColumns: totalColumns))
+        }
+        return result
+    }
+    
+    static func entriesOverlap(entry1: WorkEntry, entry2: WorkEntry) -> Bool {
+        return entry1.endTime > entry2.startTime && entry1.startTime < entry2.endTime
     }
 }

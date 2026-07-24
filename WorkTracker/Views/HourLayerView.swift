@@ -18,7 +18,7 @@ struct HourLayerView: View {
                         Spacer()
                     }
                 }
-                .frame(height: 60.0, alignment: .leading)
+                .frame(height: ViewConstants.hourLabelWidth, alignment: .leading)
             }
         }
     }
