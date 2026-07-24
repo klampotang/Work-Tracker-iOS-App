@@ -11,11 +11,14 @@ struct DayView: View {
     var day: Date
 
     var body: some View {
-        ScrollView {
-            ZStack(alignment: .topLeading) {
-                HourLayerView()
-                EventLayerView(date: day)
+        NavigationStack {
+            ScrollView {
+                ZStack(alignment: .topLeading) {
+                    HourLayerView()
+                    EventLayerView(date: day)
+                }
             }
+            .navigationTitle("Day View")
         }
     }
 }

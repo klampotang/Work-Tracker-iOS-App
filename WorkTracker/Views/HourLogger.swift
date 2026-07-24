@@ -24,7 +24,7 @@ struct HourLogger: View {
     private var groupedEntries: [(date: Date, entries: [WorkEntry])] {
         return Helpers.groupedEntries(filteredEntries)
     }
-
+    
     var body: some View {
         NavigationStack {
             ZStack {
@@ -33,21 +33,7 @@ struct HourLogger: View {
                     Divider()
                         .padding(.horizontal, 20)
                         .padding(.bottom, 10)
-                    List {
-                        ForEach(groupedEntries, id: \.date) { group in
-                            Section(header: Text(group.date, style: .date)) {
-                                ForEach(group.entries) { entry in
-                                    EntriesView(entry: entry)
-                                }
-                                .onDelete { offsets in
-                                    for offset in offsets {
-                                        modelContext.delete(group.entries[offset])
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    .scrollContentBackground(.hidden)
+                    EntriesListView(groupedEntries: groupedEntries)
                 }
                 .background(Color(uiColor: .systemGroupedBackground))
                 .toolbar {
