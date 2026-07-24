@@ -14,14 +14,13 @@ struct EventLayerView: View {
     
     var body: some View {
         GeometryReader { geometry in
-            VStack(spacing: 0) {
+            ZStack(alignment: .topLeading) {
                 let entriesForDay = Helpers.entries(for: date, entries)
                 let layedoutEvents = Helpers.layOut(entries: entriesForDay)
                 ForEach(layedoutEvents) { item in
                     let entry = item.entry
-                    let durationInHours = entry.endTime.timeIntervalSince(entry.startTime) / 3600.0
+                    let durationInHours = entry.durationInHours
                     let columnWidth = (geometry.size.width - ViewConstants.hourLabelWidth) / Double(item.totalColumns)
-                    let startHourFromMidnight = entry.startTime.timeIntervalSince(Calendar.current.startOfDay(for: entry.startTime)) / 3600.0
                     VStack {
                         Text("\(entry.job.name)")
                         Text("\(entry.startTime.formatted(date: .omitted, time: .shortened)) to \(entry.endTime.formatted(date: .omitted, time: .shortened))")
@@ -31,8 +30,8 @@ struct EventLayerView: View {
                             .fill(.blue)
                     )
                     .frame(width: columnWidth, height: durationInHours * ViewConstants.hourHeight)
-                    .offset(x: ViewConstants.hourLabelWidth + (item.columnIndex * Double(columnWidth)),
-                            y: startHourFromMidnight * ViewConstants.hourHeight)
+                    .offset(x: ViewConstants.hourLabelWidth + (Double(item.columnIndex) * Double(columnWidth)),
+                            y: entry.startHourFromMidnight * ViewConstants.hourHeight)
                     
                 }
             }
