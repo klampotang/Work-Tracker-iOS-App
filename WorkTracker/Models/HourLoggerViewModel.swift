@@ -9,6 +9,7 @@ import SwiftUI
 import Foundation
 import SwiftData
 
+@MainActor
 @Observable
 class HourLoggerViewModel {
     var selectedJobId: UUID? = nil

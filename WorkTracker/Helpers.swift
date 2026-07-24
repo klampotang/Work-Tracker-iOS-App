@@ -24,4 +24,10 @@ struct Helpers {
             .map { (date: $0.key, entries: $0.value) }
             .sorted { $0.date > $1.date }
     }
+    
+    static func entries(for day: Date, _ entries: [WorkEntry]) -> [WorkEntry] {
+        return entries.filter { entry in
+            Calendar.current.isDate(entry.startTime, inSameDayAs: day)
+        }
+    }
 }
