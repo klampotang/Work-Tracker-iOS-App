@@ -12,7 +12,7 @@ struct DayView: View {
 
     var body: some View {
         ScrollView {
-            ZStack {
+            ZStack(alignment: .topLeading) {
                 HourLayerView()
                 EventLayerView(date: day)
             }

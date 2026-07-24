@@ -30,4 +30,15 @@ struct Helpers {
             Calendar.current.isDate(entry.startTime, inSameDayAs: day)
         }
     }
+    static func hourFormatter(for index: Int) -> String {
+        if index == 0 || index == 24 {
+            return "12 AM"
+        } else if index == 12 {
+            return "12 PM"
+        } else if index < 12 {
+            return "\(index) AM"
+        } else {
+            return "\(index - 12) PM"
+        }
+    }
 }

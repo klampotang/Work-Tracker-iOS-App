@@ -11,7 +11,14 @@ struct HourLayerView: View {
     var body: some View {
         VStack(spacing: 0) {
             ForEach(0..<24) { index in
-                Text("Index: \(index)")
+                HStack {
+                    Text("\(Helpers.hourFormatter(for: index))")
+                    VStack {
+                        Divider()
+                        Spacer()
+                    }
+                }
+                .frame(height: 60.0, alignment: .leading)
             }
         }
     }
