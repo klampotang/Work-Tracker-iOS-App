@@ -20,6 +20,7 @@ struct EventLayerView: View {
                 let layedoutEvents = Helpers.layOut(entries: entriesForDay)
                 ForEach(layedoutEvents) { item in
                     let entry = item.entry
+                    let highlighted = entry == viewModel.selectedEntry
                     let durationInHours = entry.durationInHours
                     let columnWidth = (geometry.size.width - ViewConstants.hourLabelWidth) / Double(item.totalColumns)
                     VStack {
@@ -32,6 +33,7 @@ struct EventLayerView: View {
                     .background(
                         RoundedRectangle(cornerRadius: 4.0)
                             .fill(.blue)
+                            .stroke(Color.red, lineWidth: highlighted ? 2 : 0)
                     )
                     .frame(width: columnWidth, height: durationInHours * ViewConstants.hourHeight)
                     .offset(x: ViewConstants.hourLabelWidth + (Double(item.columnIndex) * Double(columnWidth)),

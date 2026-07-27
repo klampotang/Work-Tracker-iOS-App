@@ -25,37 +25,36 @@ private struct DayViewHeaderContent: View {
     var body: some View {
         VStack(spacing: 0) {
             JobPicker(viewModel: viewModel)
-            HStack {
-                let startDateRange: ClosedRange<Date> = {
-                    let calendar = Calendar.current
-                    let startComponents = DateComponents(year: 2026, month: 1, day: 1)
-                    return calendar.date(from: startComponents)!
-                        ...
-                        Date()
-                }()
+            let startDateRange: ClosedRange<Date> = {
+                let calendar = Calendar.current
+                let startComponents = DateComponents(year: 2026, month: 1, day: 1)
+                return calendar.date(from: startComponents)!
+                    ...
+                    Date()
+            }()
 
-                let endDateRange: ClosedRange<Date> = {
-                    return entry.startTime
-                        ...
-                        Date()
-                }()
-                DatePicker(
-                    "Start Date",
-                    selection: $entry.startTime,
-                    in: startDateRange,
-                    displayedComponents: [.date, .hourAndMinute]
-                )
+            let endDateRange: ClosedRange<Date> = {
+                return entry.startTime
+                    ...
+                    Date()
+            }()
 
-                DatePicker(
-                    "End Date",
-                    selection: $entry.endTime,
-                    in: endDateRange,
-                    displayedComponents: [.date, .hourAndMinute]
-                )
-            }
+            DatePicker(
+                "Start",
+                selection: $entry.startTime,
+                in: startDateRange,
+                displayedComponents: [.date, .hourAndMinute]
+            )
+            DatePicker(
+                "End",
+                selection: $entry.endTime,
+                in: endDateRange,
+                displayedComponents: [.date, .hourAndMinute]
+            )
             Button("Update") {
                 viewModel.updateEntry(entry: entry)
             }
         }
+        .background(.thinMaterial)
     }
 }

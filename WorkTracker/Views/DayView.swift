@@ -12,7 +12,7 @@ struct DayView: View {
     @Bindable var viewModel: HourLoggerViewModel
 
     var body: some View {
-        VStack(spacing: 0) {
+        VStack(alignment: .leading, spacing: 0) {
             DayViewHeader(viewModel: viewModel)
             ScrollView {
                 ZStack(alignment: .topLeading) {
@@ -21,7 +21,8 @@ struct DayView: View {
                 }
                 .frame(height: 24 * ViewConstants.hourHeight)
             }
-            .navigationTitle("Day View")
+            .navigationTitle("Day View: \(day.formatted(date: .complete, time: .omitted))")
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
 }

@@ -18,6 +18,7 @@ struct JobPicker: View {
                 Text(job.name).tag(job.id as UUID?)
             }
         }
+        .pickerStyle(.menu)
     }
 }
 
