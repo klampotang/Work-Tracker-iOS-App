@@ -16,10 +16,12 @@ struct MainTabView: View {
                     Label("Log Hours", systemImage: "timer")
                 }
                 .tag(TabIdentifier.timer)
-            DayView(day: Date(), viewModel: viewModel)
-                .tabItem {
-                    Label("Day view", systemImage: "calendar.day.timeline.leading")
-                }
+            NavigationStack {
+                DayView(day: Date(), viewModel: viewModel)
+            }
+            .tabItem {
+                Label("Day view", systemImage: "calendar.day.timeline.leading")
+            }
             History(viewModel: viewModel)
                 .tabItem {
                     Label("History", systemImage: "chart.line.text.clipboard.fill")

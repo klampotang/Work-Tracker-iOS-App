@@ -21,7 +21,7 @@ struct DayView: View {
                 }
                 .frame(height: 24 * ViewConstants.hourHeight)
             }
-            .navigationTitle("Day View: \(day.formatted(date: .complete, time: .omitted))")
+            .navigationTitle("Day View: \(day.formatted(.dateTime.month(.abbreviated).day()))")
             .navigationBarTitleDisplayMode(.inline)
         }
     }

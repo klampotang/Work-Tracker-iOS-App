@@ -29,6 +29,7 @@ struct EventLayerView: View {
                     }
                     .onTapGesture {
                         viewModel.selectedEntry = entry
+                        viewModel.selectedJobId = entry.job.id
                     }
                     .background(
                         RoundedRectangle(cornerRadius: 4.0)

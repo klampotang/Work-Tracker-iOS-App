@@ -21,6 +21,7 @@ struct DayViewHeader: View {
 private struct DayViewHeaderContent: View {
     @Bindable var entry: WorkEntry
     @Bindable var viewModel: HourLoggerViewModel
+    @Query var jobs: [Job]
 
     var body: some View {
         VStack(spacing: 0) {
@@ -52,8 +53,13 @@ private struct DayViewHeaderContent: View {
                 displayedComponents: [.date, .hourAndMinute]
             )
             Button("Update") {
+                if let selectedJobId = viewModel.selectedJobId,
+                   let job = jobs.first(where: { $0.id == selectedJobId }) {
+                    entry.job = job
+                }
                 viewModel.updateEntry(entry: entry)
             }
+            .padding(.bottom, 4)
         }
         .background(.thinMaterial)
     }
