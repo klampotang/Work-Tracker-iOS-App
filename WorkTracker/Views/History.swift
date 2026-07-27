@@ -79,6 +79,7 @@ struct History: View {
                     }
                 }
                 .frame(height: 220)
+                Spacer()
 
                 VStack {
                     Text("Filter by job:")
@@ -93,7 +94,6 @@ struct History: View {
                     }
                     .pickerStyle(.segmented)
                 }
-                Spacer()
             }
             .navigationTitle("History")
             .padding()

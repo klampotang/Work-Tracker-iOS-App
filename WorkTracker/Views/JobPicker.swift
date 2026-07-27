@@ -17,6 +17,7 @@ struct JobPicker: View {
             ForEach(jobs) { job in
                 Text(job.name).tag(job.id as UUID?)
             }
+            Text("Select a job").tag(nil as UUID?)
         }
         .pickerStyle(.menu)
     }

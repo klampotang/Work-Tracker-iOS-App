@@ -24,7 +24,7 @@ private struct DayViewHeaderContent: View {
     @Query var jobs: [Job]
 
     var body: some View {
-        VStack(spacing: 0) {
+        VStack {
             JobPicker(viewModel: viewModel)
             let startDateRange: ClosedRange<Date> = {
                 let calendar = Calendar.current
@@ -59,8 +59,9 @@ private struct DayViewHeaderContent: View {
                 }
                 viewModel.updateEntry(entry: entry)
             }
-            .padding(.bottom, 4)
+            .padding(.bottom, 10)
         }
+        .padding(.horizontal, 10)
         .background(.thinMaterial)
     }
 }
