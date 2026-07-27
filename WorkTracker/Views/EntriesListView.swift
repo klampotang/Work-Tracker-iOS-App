@@ -10,6 +10,7 @@ import SwiftData
 
 struct EntriesListView: View {
     @Environment(\.modelContext) private var modelContext
+    @Bindable var viewModel: HourLoggerViewModel
 
     private func deleteEntries(at offsets: IndexSet, in entries: [WorkEntry]) {
         for offset in offsets {
@@ -23,7 +24,7 @@ struct EntriesListView: View {
     var body: some View {
         List {
             ForEach(groupedEntries, id: \.date) { group in
-                Section(header: DaySectionHeader(date: group.date)) {
+                Section(header: DaySectionHeader(date: group.date, viewModel: viewModel)) {
                     ForEach(group.entries, id: \.id) { entry in
                         EntriesView(entry: entry)
                     }

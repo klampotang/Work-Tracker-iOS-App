@@ -9,14 +9,17 @@ import SwiftUI
 
 struct DayView: View {
     var day: Date
+    @Bindable var viewModel: HourLoggerViewModel
 
     var body: some View {
-        NavigationStack {
+        VStack(spacing: 0) {
+            DayViewHeader(viewModel: viewModel)
             ScrollView {
                 ZStack(alignment: .topLeading) {
-                    HourLayerView()
-                    EventLayerView(date: day)
+                    HourLayerView(viewModel: viewModel)
+                    EventLayerView(date: day, viewModel: viewModel)
                 }
+                .frame(height: 24 * ViewConstants.hourHeight)
             }
             .navigationTitle("Day View")
         }

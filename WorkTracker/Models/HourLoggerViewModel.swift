@@ -17,6 +17,7 @@ class HourLoggerViewModel {
     var isShowingManualEntryView: Bool = false
     var jobFilterId: UUID? = nil
     var showAnimationOverlay = false
+    var selectedEntry: WorkEntry? = nil
 
     func filteredEntries(_ entries: [WorkEntry]) -> [WorkEntry] {
         guard let jobFilterId else { return entries }
@@ -52,8 +53,16 @@ class HourLoggerViewModel {
         let workEntry = WorkEntry(job: job, startTime: startTime, endTime: endTime)
         context.insert(workEntry)
     }
+    
+    func updateEntry(entry: WorkEntry) {
+        try? entry.modelContext?.save()
+    }
 
     func reset() {
         startTime = nil
+    }
+    
+    func clearSelectedEntry() {
+        selectedEntry = nil
     }
 }

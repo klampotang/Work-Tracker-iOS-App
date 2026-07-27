@@ -8,6 +8,7 @@ import SwiftUI
 
 struct DaySectionHeader: View {
     let date: Date
+    @Bindable var viewModel: HourLoggerViewModel
     
     var body: some View {
         HStack {
@@ -16,7 +17,7 @@ struct DaySectionHeader: View {
             
             Spacer()
             
-            NavigationLink(destination: DayView(day: date)) {
+            NavigationLink(destination: DayView(day: date, viewModel: viewModel)) {
                 Label("Day View", systemImage: "calendar.day.timeline.left")
                     .labelStyle(.iconOnly)
                     .font(.caption)

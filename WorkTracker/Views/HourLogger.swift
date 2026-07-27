@@ -33,7 +33,7 @@ struct HourLogger: View {
                     Divider()
                         .padding(.horizontal, 20)
                         .padding(.bottom, 10)
-                    EntriesListView(groupedEntries: groupedEntries)
+                    EntriesListView(viewModel: viewModel, groupedEntries: groupedEntries)
                 }
                 .background(Color(uiColor: .systemGroupedBackground))
                 .toolbar {

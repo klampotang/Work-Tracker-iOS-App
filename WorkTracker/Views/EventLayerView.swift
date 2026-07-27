@@ -10,6 +10,7 @@ import SwiftData
 
 struct EventLayerView: View {
     var date: Date
+    @Bindable var viewModel: HourLoggerViewModel
     @Query(sort: \WorkEntry.startTime, order: .reverse) var entries: [WorkEntry]
     
     var body: some View {
@@ -24,6 +25,9 @@ struct EventLayerView: View {
                     VStack {
                         Text("\(entry.job.name)")
                         Text("\(entry.startTime.formatted(date: .omitted, time: .shortened)) to \(entry.endTime.formatted(date: .omitted, time: .shortened))")
+                    }
+                    .onTapGesture {
+                        viewModel.selectedEntry = entry
                     }
                     .background(
                         RoundedRectangle(cornerRadius: 4.0)
@@ -40,5 +44,6 @@ struct EventLayerView: View {
 }
 
 #Preview {
-    EventLayerView(date: Date())
+    @Previewable var viewModel = HourLoggerViewModel()
+    EventLayerView(date: Date(), viewModel: viewModel)
 }
