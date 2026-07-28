@@ -52,21 +52,63 @@ struct Helpers {
     }
     
     static func layOut(entries: [WorkEntry]) -> [LayedOutEntry] {
-        var result = [LayedOutEntry]()
-        for entry in entries {
-            // Find overlapping entries with this one
-            let overlappingEntries = entries.filter { otherEntry in
-                return entriesOverlap(entry1: otherEntry, entry2: entry)
-            }
-            // Find columnIndex
-            let columnIndex = overlappingEntries.firstIndex(where: {
-                $0.id == entry.id
-            }) ?? 0
-            // Find column count
-            let totalColumns = overlappingEntries.count
-            result.append(LayedOutEntry(entry: entry, columnIndex: columnIndex, totalColumns: totalColumns))
+        let sortedEntries = sort(entries: entries)
+        let clusters = group(sortedEntries: sortedEntries)
+        return clusters.flatMap { cluster in
+            layout(cluster: cluster)
         }
-        return result
+    }
+    
+    static func sort(entries: [WorkEntry]) -> [WorkEntry] {
+        return entries.sorted { first, second in
+            if first.startTime != second.startTime {
+                return first.startTime < second.startTime
+            }
+            return first.endTime < second.endTime
+        }
+    }
+    
+    static func group(sortedEntries: [WorkEntry]) -> [[WorkEntry]] {
+        var clusteredEntries = [[WorkEntry]]()
+        var currentCluster = [WorkEntry]()
+        var clusterEnd = Date.distantPast
+        for entry in sortedEntries {
+            // If this entry is not in the cluster, make a new cluster
+            if entry.startTime >= clusterEnd {
+                clusteredEntries.append(currentCluster)
+                currentCluster = []
+            }
+            currentCluster.append(entry)
+            clusterEnd = max(entry.endTime, clusterEnd)
+        }
+        
+        if !currentCluster.isEmpty {
+            clusteredEntries.append(currentCluster)
+        }
+        
+        return clusteredEntries
+    }
+    
+    static func layout(cluster: [WorkEntry]) -> [LayedOutEntry] {
+        // Track end time of event currently in each column
+        var columnEndTimes = [Date]()
+        var placements = [(entry: WorkEntry, column: Int)]()
+        
+        for entry in cluster {
+            // Find column that's empty:
+            if let freeColumnIndex = columnEndTimes.firstIndex(where: {
+                $0 <= entry.startTime
+            }) {
+                columnEndTimes[freeColumnIndex] = entry.endTime
+                placements.append((entry: entry, column: freeColumnIndex))
+            } else {
+                columnEndTimes.append(entry.endTime)
+                placements.append((entry: entry, column: columnEndTimes.count - 1))
+            }
+        }
+        return placements.map { placement in
+            return LayedOutEntry(entry: placement.entry, columnIndex: placement.column, totalColumns: columnEndTimes.count)
+        }
     }
     
     static func entriesOverlap(entry1: WorkEntry, entry2: WorkEntry) -> Bool {
