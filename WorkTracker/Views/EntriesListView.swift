@@ -35,12 +35,12 @@ struct EntriesListView: View {
                             }
                     }
                     .alert("Delete item?", item: $itemToDelete) { entry in
-                        Button("Delete", role: .destructive) {
+                        Button(Strings.delete, role: .destructive) {
                             delete(entry: entry)
                         }
-                        Button("Cancel", role: .cancel) { }
+                        Button(Strings.cancel, role: .cancel) { }
                     } message: { _ in
-                        Text("Are you sure you want to delete this entry?")
+                        Text(Strings.deleteAlertTitle)
                     }
                 }
             }

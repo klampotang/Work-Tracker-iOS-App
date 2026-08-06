@@ -1,0 +1,21 @@
+//
+//  Strings.swift
+//  WorkTracker
+//
+//  Created by Kelly Lampotang on 8/6/26.
+//
+
+import Foundation
+
+struct Strings {
+    static let deleteAlertTitle = "Are you sure you want to delete this entry?"
+    static let delete = "Delete"
+    static let cancel = "Cancel"
+    static let update = "Update"
+    static let start = "Start"
+    static let end = "End"
+    
+    static let filterByJob = "Filter by job:"
+    static let job = "Job"
+    static let history =  "History"
+}

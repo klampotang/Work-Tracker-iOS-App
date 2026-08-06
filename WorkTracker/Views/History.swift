@@ -82,9 +82,9 @@ struct History: View {
                 Spacer()
 
                 VStack {
-                    Text("Filter by job:")
+                    Text(Strings.filterByJob)
                         .bold()
-                    Picker("Job", selection: $viewModel.jobFilterId) {
+                    Picker(Strings.job, selection: $viewModel.jobFilterId) {
                         Text("All").tag(nil as UUID?)
                             .font(.caption)
                         ForEach(jobs) { job in
@@ -95,7 +95,7 @@ struct History: View {
                     .pickerStyle(.segmented)
                 }
             }
-            .navigationTitle("History")
+            .navigationTitle(Strings.history)
             .padding()
             .background(Color(uiColor: .secondarySystemGroupedBackground))
             .clipShape(RoundedRectangle(cornerRadius: 16))

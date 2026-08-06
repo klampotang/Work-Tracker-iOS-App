@@ -41,18 +41,18 @@ private struct DayViewHeaderContent: View {
             }()
 
             DatePicker(
-                "Start",
+                Strings.start,
                 selection: $entry.startTime,
                 in: startDateRange,
                 displayedComponents: [.date, .hourAndMinute]
             )
             DatePicker(
-                "End",
+                Strings.end,
                 selection: $entry.endTime,
                 in: endDateRange,
                 displayedComponents: [.date, .hourAndMinute]
             )
-            Button("Update") {
+            Button(Strings.update) {
                 if let selectedJobId = viewModel.selectedJobId,
                    let job = jobs.first(where: { $0.id == selectedJobId }) {
                     entry.job = job
