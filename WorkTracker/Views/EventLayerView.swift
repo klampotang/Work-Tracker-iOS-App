@@ -26,6 +26,7 @@ struct EventLayerView: View {
                     VStack {
                         Text("\(entry.job.name)")
                         Text("\(entry.startTime.formatted(date: .omitted, time: .shortened)) to \(entry.endTime.formatted(date: .omitted, time: .shortened))")
+                            .font(.caption)
                     }
                     .onTapGesture {
                         viewModel.selectedEntry = entry

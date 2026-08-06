@@ -40,7 +40,7 @@ struct Helpers {
         }
     }
     static func hourFormatter(for index: Int) -> String {
-        if index == 0 || index == 24 {
+        if index == 0 || index == Constants.hoursInDay {
             return "12 AM"
         } else if index == 12 {
             return "12 PM"

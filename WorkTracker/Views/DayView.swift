@@ -19,7 +19,7 @@ struct DayView: View {
                     HourLayerView(viewModel: viewModel)
                     EventLayerView(date: day, viewModel: viewModel)
                 }
-                .frame(height: 24 * ViewConstants.hourHeight)
+                .frame(height: Double(Constants.hoursInDay) * ViewConstants.hourHeight)
             }
             .navigationTitle("Day View: \(day.formatted(.dateTime.month(.abbreviated).day()))")
             .navigationBarTitleDisplayMode(.inline)

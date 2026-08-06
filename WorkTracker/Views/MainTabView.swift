@@ -20,7 +20,7 @@ struct MainTabView: View {
                 DayView(day: Date(), viewModel: viewModel)
             }
             .tabItem {
-                Label("Day view", systemImage: "calendar.day.timeline.leading")
+                Label("Today", systemImage: "calendar.day.timeline.leading")
             }
             History(viewModel: viewModel)
                 .tabItem {

@@ -33,22 +33,22 @@ struct ManualEntryView: View {
         VStack {
             JobPicker(viewModel: viewModel)
             DatePicker(
-                "Start Date",
+                Strings.startDate,
                 selection: $startTime,
                 in: startDateRange,
                 displayedComponents: [.date, .hourAndMinute]
             )
-            Button("Start from selected time") {
+            Button(Strings.startFromSelectedTime) {
                 viewModel.startTrackingJob(with: startTime)
                 viewModel.isShowingManualEntryView = false
             }
             DatePicker(
-                "End Date",
+                Strings.endDate,
                 selection: $endTime,
                 in: endDateRange,
                 displayedComponents: [.date, .hourAndMinute]
             )
-            Button("Add manual entry") {
+            Button(Strings.addManualEntry) {
                 if let job = jobs.first(where: { $0.id == viewModel.selectedJobId }) {
                     viewModel.addManualEntry(with: startTime, endTime: endTime, job: job, context: modelContext)
                 }

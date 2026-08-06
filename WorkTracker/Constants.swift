@@ -10,6 +10,9 @@ enum TabIdentifier: Int {
     case history = 1
 }
 
+enum Constants {
+    static let hoursInDay: Int = 24
+}
 
 enum ViewConstants {
     static let hourLabelWidth = 100.0

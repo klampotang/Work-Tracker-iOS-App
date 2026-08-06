@@ -18,4 +18,9 @@ struct Strings {
     static let filterByJob = "Filter by job:"
     static let job = "Job"
     static let history =  "History"
+    
+    static let startDate = "Start Date"
+    static let endDate = "End Date"
+    static let startFromSelectedTime = "Start from selected time"
+    static let addManualEntry = "Add Manual Entry"
 }

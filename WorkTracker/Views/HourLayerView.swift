@@ -12,7 +12,7 @@ struct HourLayerView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            ForEach(0..<24) { index in
+            ForEach(0..<Constants.hoursInDay) { index in
                 HStack {
                     Text("\(Helpers.hourFormatter(for: index))")
                         .frame(width: ViewConstants.hourLabelWidth, alignment: .leading)
