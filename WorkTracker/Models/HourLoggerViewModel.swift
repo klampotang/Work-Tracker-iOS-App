@@ -24,8 +24,8 @@ class HourLoggerViewModel {
         return entries.filter { $0.job.id == jobFilterId }
     }
 
-    func addJob(_ name: String, context: ModelContext) {
-        let newJob = Job(name: name)
+    func addJob(_ name: String, color: Color = .blue, context: ModelContext) {
+        let newJob = Job(name: name, color: color)
         context.insert(newJob)
         if selectedJobId == nil {
             selectedJobId = newJob.id

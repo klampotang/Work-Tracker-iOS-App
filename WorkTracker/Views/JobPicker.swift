@@ -13,11 +13,11 @@ struct JobPicker: View {
     @Query var jobs: [Job]
 
     var body: some View {
-        Picker("Job", selection: $viewModel.selectedJobId) {
+        Picker(Strings.job, selection: $viewModel.selectedJobId) {
             ForEach(jobs) { job in
                 Text(job.name).tag(job.id as UUID?)
             }
-            Text("Select a job").tag(nil as UUID?)
+            Text(Strings.selectAJob).tag(nil as UUID?)
         }
         .pickerStyle(.menu)
     }

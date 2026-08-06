@@ -34,7 +34,7 @@ struct EventLayerView: View {
                     }
                     .background(
                         RoundedRectangle(cornerRadius: 4.0)
-                            .fill(.blue)
+                            .fill(entry.job.color)
                             .stroke(Color.red, lineWidth: highlighted ? 2 : 0)
                     )
                     .frame(width: columnWidth, height: durationInHours * ViewConstants.hourHeight)

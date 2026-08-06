@@ -16,6 +16,7 @@ struct HourLogger: View {
     @Environment(\.modelContext) private var modelContext
     @State private var isShowingAddJobAlert: Bool = false
     @State private var newJobName: String = ""
+    @State private var jobColor = Color.blue
 
     private var filteredEntries: [WorkEntry] {
         viewModel.filteredEntries(entries)
@@ -61,16 +62,34 @@ struct HourLogger: View {
                         }
                     }
                 }
-                .alert("Add job", isPresented: $isShowingAddJobAlert) {
-                    TextField("Add job", text: $newJobName)
-                    Button("Cancel", role: .cancel) {
-                        newJobName = ""
+                .sheet(isPresented: $isShowingAddJobAlert) {
+                    NavigationStack {
+                        Form {
+                            Section {
+                                TextField("Job name", text: $newJobName)
+                                ColorPicker("Job Color", selection: $jobColor)
+                            }
+                        }
+                        .navigationTitle("Add Job")
+                        .navigationBarTitleDisplayMode(.inline)
+                        .toolbar {
+                            ToolbarItem(placement: .cancellationAction) {
+                                Button("Cancel") {
+                                    newJobName = ""
+                                    isShowingAddJobAlert = false
+                                }
+                            }
+                            ToolbarItem(placement: .confirmationAction) {
+                                Button("Okay") {
+                                    viewModel.addJob(newJobName, color: jobColor, context: modelContext)
+                                    newJobName = ""
+                                    isShowingAddJobAlert = false
+                                }
+                                .disabled(newJobName.isEmpty)
+                            }
+                        }
                     }
-                    Button("Okay") {
-                        viewModel.addJob(newJobName, context: modelContext)
-                        newJobName = ""
-                    }
-                    .disabled(newJobName.isEmpty)
+                    .presentationDetents([.height(200)])
                 }
                 .navigationTitle("Work Tracker")
                 
