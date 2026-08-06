@@ -28,6 +28,9 @@ struct EventLayerView: View {
                         Text("\(entry.startTime.formatted(date: .omitted, time: .shortened)) to \(entry.endTime.formatted(date: .omitted, time: .shortened))")
                             .font(.caption)
                     }
+                    .frame(width: columnWidth,
+                           height: max(30, durationInHours * ViewConstants.hourHeight)
+                    )
                     .onTapGesture {
                         viewModel.selectedEntry = entry
                         viewModel.selectedJobId = entry.job.id
@@ -37,7 +40,6 @@ struct EventLayerView: View {
                             .fill(entry.job.color)
                             .stroke(Color.red, lineWidth: highlighted ? 2 : 0)
                     )
-                    .frame(width: columnWidth, height: durationInHours * ViewConstants.hourHeight)
                     .offset(x: ViewConstants.hourLabelWidth + (Double(item.columnIndex) * Double(columnWidth)),
                             y: entry.startHourFromMidnight * ViewConstants.hourHeight)
                     
